@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoForge Empire</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header with game logo, resources and settings -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-car"></i> AutoForge Empire
+            </div>
+            <div class="resources">
+                <div class="resource">
+                    <i class="fas fa-coins"></i>
+                    <span id="credits">0</span> Credits
+                </div>
+                <div class="resource premium">
+                    <i class="fas fa-scroll"></i>
+                    <span id="blueprints">0</span> Blueprints
+                </div>
+            </div>
+            <div class="settings">
+                <button id="settings-btn"><i class="fas fa-cog"></i></button>
+            </div>
+        </header>
+
+        <!-- Main game content -->
+        <main>
+            <div class="sidebar">
+                <nav>
+                    <button class="nav-btn active" data-tab="factory"><i class="fas fa-industry"></i> Factory</button>
+                    <button class="nav-btn" data-tab="research"><i class="fas fa-flask"></i> R&D Lab</button>
+                    <button class="nav-btn" data-tab="contracts"><i class="fas fa-file-signature"></i> Contracts</button>
+                    <button class="nav-btn" data-tab="market"><i class="fas fa-store"></i> Market</button>
+                    <button class="nav-btn" data-tab="union"><i class="fas fa-users"></i> Trade Union</button>
+                </nav>
+            </div>
+
+            <div class="content">
+                <!-- Factory Tab -->
+                <section id="factory" class="tab-content active">
+                    <div class="production-lines">
+                        <h2>Production Lines</h2>
+                        <div class="production-line" id="sedan-line">
+                            <div class="line-header">
+                                <h3>Sedan Production</h3>
+                                <div class="line-status">
+                                    <span class="level">Level <span id="sedan-level">1</span></span>
+                                    <span class="output">Output: <span id="sedan-output">1</span>/s</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="sedan-progress"></div>
+                            </div>
+                            <div class="line-actions">
+                                <button class="action-btn" id="sedan-produce">Produce Sedan</button>
+                                <button class="action-btn upgrade-btn" id="sedan-upgrade">
+                                    Upgrade <span id="sedan-upgrade-cost">100</span> <i class="fas fa-coins"></i>
+                                </button>
+                            </div>
+                            <div class="production-stats">
+                                <div class="stat">
+                                    <i class="fas fa-car"></i> Sedans: <span id="sedan-count">0</span>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-dollar-sign"></i> Profit: <span id="sedan-profit">10</span>/each
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Locked production lines -->
+                        <div class="production-line locked" id="suv-line">
+                            <div class="locked-overlay">
+                                <i class="fas fa-lock"></i>
+                                <p>Unlocks at <span id="suv-unlock">1000</span> Credits</p>
+                            </div>
+                            <h3>SUV Production</h3>
+                        </div>
+
+                        <div class="production-line locked" id="electric-line">
+                            <div class="locked-overlay">
+                                <i class="fas fa-lock"></i>
+                                <p>Unlocks at <span id="electric-unlock">5000</span> Credits</p>
+                            </div>
+                            <h3>Electric Car Production</h3>
+                        </div>
+
+                        <div class="production-line locked" id="sports-line">
+                            <div class="locked-overlay">
+                                <i class="fas fa-lock"></i>
+                                <p>Unlocks at <span id="sports-unlock">10000</span> Credits</p>
+                            </div>
+                            <h3>Sports Car Production</h3>
+                        </div>
+                    </div>
+
+                    <div class="factory-management">
+                        <div class="foremen-section">
+                            <h2>Foremen</h2>
+                            <div class="foremen-list" id="foremen-list">
+                                <div class="foreman">
+                                    <div class="foreman-info">
+                                        <h4>Production Expert</h4>
+                                        <p>+15% production speed</p>
+                                    </div>
+                                    <div class="foreman-action">
+                                        <button class="hire-btn" data-foreman="production-expert" data-cost="500">
+                                            Hire: 500 <i class="fas fa-coins"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="foreman">
+                                    <div class="foreman-info">
+                                        <h4>Cost Optimizer</h4>
+                                        <p>-10% upgrade costs</p>
+                                    </div>
+                                    <div class="foreman-action">
+                                        <button class="hire-btn" data-foreman="cost-optimizer" data-cost="750">
+                                            Hire: 750 <i class="fas fa-coins"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="foreman premium-item">
+                                    <div class="foreman-info">
+                                        <h4>Master Engineer</h4>
+                                        <p>+25% profit per vehicle</p>
+                                    </div>
+                                    <div class="foreman-action">
+                                        <button class="hire-btn premium-btn" data-foreman="master-engineer" data-cost="50">
+                                            Hire: 50 <i class="fas fa-scroll"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="boosts-section">
+                            <h2>Production Boosts</h2>
+                            <div class="boosts-list">
+                                <div class="boost">
+                                    <div class="boost-info">
+                                        <h4>2x Production</h4>
+                                        <p>Doubles production for 1 hour</p>
+                                    </div>
+                                    <div class="boost-action">
+                                        <button class="boost-btn" data-boost="2x" data-duration="3600">
+                                            Watch Ad <i class="fas fa-play"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="boost premium-item">
+                                    <div class="boost-info">
+                                        <h4>5x Production</h4>
+                                        <p>5x production for 30 minutes</p>
+                                    </div>
+                                    <div class="boost-action">
+                                        <button class="boost-btn premium-btn" data-boost="5x" data-duration="1800" data-cost="25">
+                                            25 <i class="fas fa-scroll"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- R&D Lab Tab (Initially Hidden) -->
+                <section id="research" class="tab-content">
+                    <h2>Research & Development</h2>
+                    <div class="research-container">
+                        <div class="research-tree">
+                            <div class="research-item locked" id="research-automation">
+                                <div class="research-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="research-info">
+                                    <h3>Advanced Automation</h3>
+                                    <p>+25% production speed for all lines</p>
+                                    <div class="research-cost">1000 <i class="fas fa-coins"></i></div>
+                                </div>
+                            </div>
+                            <div class="research-item locked" id="research-materials">
+                                <div class="research-icon">
+                                    <i class="fas fa-hammer"></i>
+                                </div>
+                                <div class="research-info">
+                                    <h3>Lightweight Materials</h3>
+                                    <p>+15% profit for all vehicles</p>
+                                    <div class="research-cost">1500 <i class="fas fa-coins"></i></div>
+                                </div>
+                            </div>
+                            <div class="research-item locked" id="research-eco">
+                                <div class="research-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="research-info">
+                                    <h3>Eco-Friendly Tech</h3>
+                                    <p>+50% Electric Car production</p>
+                                    <div class="research-cost">2000 <i class="fas fa-coins"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contracts Tab (Initially Hidden) -->
+                <section id="contracts" class="tab-content">
+                    <h2>Contracts</h2>
+                    <div class="contracts-container">
+                        <div class="contract">
+                            <div class="contract-header">
+                                <h3>Government Fleet Order</h3>
+                                <div class="contract-timer">09:45 remaining</div>
+                            </div>
+                            <div class="contract-details">
+                                <p>Produce 50 Sedans</p>
+                                <div class="contract-progress">
+                                    <div class="progress-text">0/50</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-rewards">
+                                <div class="reward">
+                                    <i class="fas fa-coins"></i> 500 Credits
+                                </div>
+                                <div class="reward">
+                                    <i class="fas fa-scroll"></i> 10 Blueprints
+                                </div>
+                            </div>
+                            <button class="contract-btn">Accept Contract</button>
+                        </div>
+                        <div class="contract">
+                            <div class="contract-header">
+                                <h3>Luxury Dealership Order</h3>
+                                <div class="contract-timer">01:30:00 remaining</div>
+                            </div>
+                            <div class="contract-details">
+                                <p>Produce 5 Sports Cars</p>
+                                <p class="contract-requirement">Requires Sports Car Production Line</p>
+                            </div>
+                            <div class="contract-rewards">
+                                <div class="reward">
+                                    <i class="fas fa-coins"></i> 2000 Credits
+                                </div>
+                                <div class="reward">
+                                    <i class="fas fa-scroll"></i> 25 Blueprints
+                                </div>
+                            </div>
+                            <button class="contract-btn" disabled>Sports Cars Required</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Market Tab (Initially Hidden) -->
+                <section id="market" class="tab-content">
+                    <h2>Marketplace</h2>
+                    <div class="market-container">
+                        <div class="market-tabs">
+                            <button class="market-tab active" data-market="shop">Shop</button>
+                            <button class="market-tab" data-market="exchange">Exchange</button>
+                        </div>
+                        
+                        <div id="shop" class="market-content active">
+                            <div class="shop-item premium-item">
+                                <div class="shop-item-image">
+                                    <i class="fas fa-scroll"></i>
+                                </div>
+                                <div class="shop-item-details">
+                                    <h3>50 Blueprints</h3>
+                                    <p class="shop-item-desc">Premium currency for special upgrades</p>
+                                    <button class="shop-item-btn">$4.99</button>
+                                </div>
+                            </div>
+                            <div class="shop-item premium-item">
+                                <div class="shop-item-image">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div class="shop-item-details">
+                                    <h3>Permanent Speed Boost</h3>
+                                    <p class="shop-item-desc">+10% global production speed</p>
+                                    <button class="shop-item-btn">100 <i class="fas fa-scroll"></i></button>
+                                </div>
+                            </div>
+                            <div class="shop-item">
+                                <div class="shop-item-image">
+                                    <i class="fas fa-paint-roller"></i>
+                                </div>
+                                <div class="shop-item-details">
+                                    <h3>Neon Factory Skin</h3>
+                                    <p class="shop-item-desc">Customize your factory appearance</p>
+                                    <button class="shop-item-btn">75 <i class="fas fa-scroll"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="exchange" class="market-content">
+                            <div class="exchange-rate">
+                                <p>Current Exchange Rate:</p>
+                                <p>1000 Credits = 10 Blueprints</p>
+                            </div>
+                            <div class="exchange-controls">
+                                <div class="exchange-input">
+                                    <label for="exchange-amount">Amount to Exchange:</label>
+                                    <input type="number" id="exchange-amount" min="1000" step="1000" value="1000">
+                                </div>
+                                <div class="exchange-preview">
+                                    <p>You will receive: <span id="exchange-result">10</span> Blueprints</p>
+                                </div>
+                                <button id="exchange-btn" class="exchange-btn">Exchange Credits</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Union Tab (Initially Hidden) -->
+                <section id="union" class="tab-content">
+                    <h2>Trade Union</h2>
+                    <div class="union-container">
+                        <div class="union-status">
+                            <div class="union-header">
+                                <h3>You are not in a Trade Union</h3>
+                                <p>Join a Trade Union to receive collective bonuses!</p>
+                            </div>
+                            <div class="union-actions">
+                                <button class="union-btn" id="create-union">Create Union (1000 <i class="fas fa-coins"></i>)</button>
+                                <button class="union-btn" id="join-union">Join Union</button>
+                            </div>
+                        </div>
+
+                        <div class="union-benefits">
+                            <h3>Union Benefits</h3>
+                            <ul class="benefits-list">
+                                <li><i class="fas fa-check"></i> +5% global production speed</li>
+                                <li><i class="fas fa-check"></i> +10% offline production</li>
+                                <li><i class="fas fa-check"></i> Shared production boosts</li>
+                                <li><i class="fas fa-check"></i> Special union contracts</li>
+                            </ul>
+                        </div>
+
+                        <div class="union-leaderboard">
+                            <h3>Top Trade Unions</h3>
+                            <table class="leaderboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Union Name</th>
+                                        <th>Members</th>
+                                        <th>Total Production</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>AutoMasters</td>
+                                        <td>50/50</td>
+                                        <td>1.5M vehicles</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>CarCrafters</td>
+                                        <td>48/50</td>
+                                        <td>1.2M vehicles</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>MotorMoguls</td>
+                                        <td>45/50</td>
+                                        <td>950K vehicles</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Notification area for game alerts -->
+        <div id="notifications"></div>
+
+        <!-- Settings modal (hidden by default) -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-option">
+                        <label for="sound-toggle">Sound Effects</label>
+                        <label class="switch">
+                            <input type="checkbox" id="sound-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-option">
+                        <label for="music-toggle">Background Music</label>
+                        <label class="switch">
+                            <input type="checkbox" id="music-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-option">
+                        <label for="notifications-toggle">Notifications</label>
+                        <label class="switch">
+                            <input type="checkbox" id="notifications-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-option">
+                        <button id="save-game" class="settings-btn">Save Game</button>
+                        <button id="load-game" class="settings-btn">Load Game</button>
+                        <button id="reset-game" class="settings-btn danger">Reset Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
